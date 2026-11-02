@@ -54,6 +54,7 @@ fn modcontrols_rows(
                 centered: true,
             },
             list: false,
+            row: 0,
         });
         y += 20.0;
         for k in wanted {
@@ -92,6 +93,7 @@ fn modcontrols_rows(
                     centered: false,
                 },
                 list: false,
+                row: 0,
             });
             out.push(button(change_x, y, 130.0, message, Act::NativeKey(i, k)));
             y += 20.0;
