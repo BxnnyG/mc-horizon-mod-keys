@@ -1,0 +1,47 @@
+[mod]
+id = "modcontrols"
+version = "1.0.0"
+priority = 100
+
+# Adds to the Key Binds page (game internals): pinned to the commit it was
+# built against.
+[compatibility]
+horizon_revision = "d91cab68ded29bd2b004f7050c468fb98c41a00b"
+
+[[module]]
+id = "runtime"
+file = "crates/horizon-client-render/src/options_ui.rs"
+name = "modcontrols"
+source = "runtime.rs"
+
+[[injection]]
+id = "list"
+kind = "HEAD"
+target = "horizon_client::game::native_hooks::Game<'_>::native_mods"
+helper = "list.rs"
+bindings = [
+  { name = "mods", ty = "&mut Vec<crate::game::native_hooks::NativeMod>", value = "&mut *mods" },
+]
+
+# The scroll asked for, before the page clamps it to its own rows.
+[[injection]]
+id = "scroll"
+kind = "HEAD"
+target = "horizon_client_render::options_ui::OptionsUi::layout"
+helper = "scroll.rs"
+bindings = [
+  { name = "ui", ty = "&OptionsUi", value = "&*self" },
+]
+
+# Every native mod's keys under the game's own, in Key Binds.
+[[injection]]
+id = "rows"
+kind = "RETURN"
+target = "horizon_client_render::options_ui::OptionsUi::layout"
+helper = "rows.rs"
+bindings = [
+  { name = "ui", ty = "&mut OptionsUi", value = "&mut *self" },
+  { name = "s", ty = "&Settings", value = "s" },
+  { name = "w", ty = "f32", value = "w" },
+  { name = "value", ty = "(Vec<Widget>, f32, f32, f32)", value = "$value" },
+]
