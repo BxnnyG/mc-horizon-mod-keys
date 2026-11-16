@@ -69,7 +69,7 @@ fn modcontrols_rows(
             };
             let twice = key != "key.keyboard.unknown"
                 && (used.iter().filter(|u| **u == key).count() > 1
-                    || MAPPINGS.iter().any(|b| s.keys.get(b.0) == key));
+                    || crate::keybinds::MAPPINGS.iter().any(|b| s.keys.get(b.0) == key));
             if twice {
                 message = Text::literal("[ ")
                     .append(message.with_color(text::WHITE))
